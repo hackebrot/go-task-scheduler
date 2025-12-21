@@ -93,9 +93,7 @@ func (s *dynamicSleepScheduler) Start(ctx context.Context) {
 		b := s.nextBatch()
 
 		for _, task := range b.ready {
-			if err := task.Execute(); err != nil {
-				slog.Error("error executing task", "task_id", task.ID(), "error", err)
-			}
+			s.executeTask(task)
 		}
 
 		select {
@@ -103,6 +101,13 @@ func (s *dynamicSleepScheduler) Start(ctx context.Context) {
 			return
 		case <-time.After(b.sleepDuration):
 		}
+	}
+}
+
+// executeTask runs a single task and logs any errors that occur.
+func (s *dynamicSleepScheduler) executeTask(task scheduler.Task) {
+	if err := task.Execute(); err != nil {
+		slog.Error("error executing task", "task_id", task.ID(), "error", err)
 	}
 }
 
