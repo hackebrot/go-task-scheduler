@@ -98,6 +98,7 @@ func (s *dynamicSleepScheduler) Start(ctx context.Context) {
 
 		select {
 		case <-ctx.Done():
+			slog.Info("context cancelled, stopping scheduler")
 			return
 		case <-time.After(b.sleepDuration):
 		}

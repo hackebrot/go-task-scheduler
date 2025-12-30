@@ -46,6 +46,7 @@ func (s *pollingScheduler) Start(ctx context.Context) {
 
 		select {
 		case <-ctx.Done():
+			slog.Info("context cancelled, stopping scheduler")
 			return
 		case <-ticker.C:
 			s.executeReadyTasks()
