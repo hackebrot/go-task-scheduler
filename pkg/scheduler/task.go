@@ -13,3 +13,12 @@ type Task interface {
 	// ID returns a unique identifier for this task (used for logging).
 	ID() string
 }
+
+// TaskResult represents the outcome of a task execution.
+type TaskResult struct {
+	TaskID    string
+	Error     error
+	StartTime time.Time
+	EndTime   time.Time
+	WorkerID  string
+}
