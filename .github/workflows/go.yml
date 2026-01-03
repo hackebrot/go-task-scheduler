@@ -1,0 +1,39 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/go.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/go.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        scheduler:
+          - dynamicsleep
+          - polling
+          - workerpool
+          - heap
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version-file: 'go.mod'
+
+    - name: Build ${{ matrix.scheduler }}
+      run: go build -v "./cmd/${{ matrix.scheduler }}"
+
