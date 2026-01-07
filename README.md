@@ -1,6 +1,15 @@
 # go-task-scheduler
 
-Task scheduler implementations in Go, from synchronous to heap-based worker pool.
+Task scheduler implementations in Go, from synchronous to heap-based.
+
+## Blog Post
+
+This repository contains the source code for [Evolution of a Task Scheduler in
+Go][blog], which explores the tradeoffs between timing, concurrency, and
+efficiency as the design evolves from dynamic sleep through polling and worker
+pools to a final heap-based design.
+
+[blog]: https://raphael.codes/blog/evolution-of-a-task-scheduler-in-go/
 
 ## Installation
 
@@ -44,10 +53,12 @@ type Task interface {
 
 | Scheduler | Execution Model | Time Complexity | Space Complexity | Best For | Source |
 |-----------|----------------|-----------------|------------------|----------|--------|
-| Dynamic Sleep | Sequential | O(n) per batch | O(n) | Low concurrency requirements | [cmd/dynamicsleep](cmd/dynamicsleep) |
-| Polling | Concurrent (unbounded) | O(n) per interval | O(n) | Low task counts, minimal code complexity | [cmd/polling](cmd/polling) |
-| Worker Pool | Concurrent (bounded) | O(n) per interval | O(n) | Controlled concurrency, result tracking | [cmd/workerpool](cmd/workerpool) |
-| Heap | Concurrent (bounded) | O(log n) per dispatch | O(n) | High task volumes, performance-critical applications | [cmd/heap](cmd/heap) |
+| Dynamic Sleep | Sequential | `O(n)` per batch | `O(n)` | Low concurrency requirements | [cmd/dynamicsleep](cmd/dynamicsleep) |
+| Polling | Concurrent (unbounded) | `O(n)` per interval | `O(n)` | Low task counts, minimal code complexity | [cmd/polling](cmd/polling) |
+| Worker Pool | Concurrent (bounded) | `O(n)` per interval | `O(n)` | Controlled concurrency, result tracking | [cmd/workerpool](cmd/workerpool) |
+| Heap | Concurrent (bounded) | `O(log n)` per dispatch | `O(n)` | High task volumes, production systems* | [cmd/heap](cmd/heap) |
+
+*Production use requires additional work: persistence, retries, observability, graceful shutdown, and more.
 
 ## License
 
