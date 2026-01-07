@@ -17,12 +17,12 @@ const defaultReadyTasksBufSize = 100
 // heapScheduler is a task scheduler that uses a min-heap to efficiently manage task priorities
 // and a worker pool to execute ready tasks concurrently.
 type heapScheduler struct {
-	tasks         *taskHeap
-	mu            sync.Mutex
-	workerCount   int
-	wg            sync.WaitGroup
-	readyTasks    chan scheduler.Task
-	results       chan scheduler.TaskResult
+	tasks       *taskHeap
+	mu          sync.Mutex
+	workerCount int
+	wg          sync.WaitGroup
+	readyTasks  chan scheduler.Task
+	results     chan scheduler.TaskResult
 }
 
 // NewScheduler creates a new heapScheduler instance.
